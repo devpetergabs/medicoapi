@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import med.voll.api.domain.endereco.Endereco;
 import med.voll.api.domain.paciente.Paciente;
 import med.voll.api.domain.paciente.PacienteRepository;
-import med.voll.api.util.TestDataFactory;
 
 @SpringBootTest
 public class PacienteRepositoryTest {
