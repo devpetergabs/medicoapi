@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DB_USERNAME: ${{ secrets.DB_USERNAME || 'root' }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD || 'root' }}
 
     services:
       mysql:
@@ -15,8 +18,7 @@ jobs:
         ports:
           - 3306:3306
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MYSQL_USER: ${{ secrets.DB_USERNAME }}
+          MYSQL_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
           MYSQL_DATABASE: vollmed_api
 
     steps:
@@ -29,10 +31,15 @@ jobs:
         distribution: 'temurin'
         java-version: '18'
 
+    - name: Install MySQL client
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y mysql-client
+
     - name: Wait for MySQL to be ready
       run: |
         for i in {1..30}; do
-          if mysqladmin ping -h 127.0.0.1 --silent; then
+          if mysqladmin ping -h 127.0.0.1 -u"$DB_USERNAME" -p"$DB_PASSWORD" --silent; then
             echo "MySQL is ready!"
             break
           fi
