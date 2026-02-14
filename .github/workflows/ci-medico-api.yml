@@ -1,4 +1,4 @@
-name: Java CI with MySQL
+name: Build and Test Medico API
 
 on:
   push:
@@ -15,7 +15,8 @@ jobs:
         ports:
           - 3306:3306
         env:
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_USER: ${{ secrets.DB_USERNAME }}
           MYSQL_DATABASE: vollmed_api
 
     steps:
